@@ -12,30 +12,40 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
-    """Register user"""
+    """Register user to database."""
+    errors = {}
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        f = request.form
         db = get_db()
-        error = None
 
-        if not username:
-            error = 'Username is required.'
-        elif not password:
-            error = 'Password is required.'
+        if not f["email"]:
+            errors["email"] = "Email address is required"
 
-        if error is None:
+        if not f["password"]:
+            errors["password"] = "Password is required"
+        elif f["password"] != f["confirmation"]:
+            errors["confirmation"] = "Passwords do not match"
+
+        if not f["short_name"]:
+            errors["short_name"] = "Short name is required for profile"
+
+        if not errors:
             try:
-                db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
-                )
-                db.commit()
+                db.execute("""INSERT INTO """)
+
             except db.IntegrityError:
-                error = f"User {username} is already registered."
+                flash(f"User {f['email']} is already registered.")
             else:
                 return redirect(url_for("auth.login"))
 
-        flash(error)
+    return render_template('auth/register.html', errors=errors)
 
-    return render_template('auth/register.html')
+
+@bp.route('/login', methods=('GET', 'POST'))
+def login():
+    return "Login page."
+
+
+@bp.route('/logout', methods=('GET', 'POST'))
+def logout():
+    return "Logout page."

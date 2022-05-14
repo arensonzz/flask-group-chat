@@ -29,8 +29,9 @@ def create_app(test_config=None):
     db.init_app(app)
 
     # Register blueprints
-    from . import auth
+    from . import (auth, chat)
     app.register_blueprint(auth.bp)
+    app.register_blueprint(chat.bp)
 
     # A route to test Flask connection
     @app.route('/test')

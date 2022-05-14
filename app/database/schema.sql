@@ -17,8 +17,17 @@ CREATE TABLE USER (
 
 CREATE TABLE chat_room (
     chat_room_id integer NOT NULL PRIMARY KEY,
+    created_by_user integer NOT NULL,
     name text NOT NULL UNIQUE,
     password text NOT NULL,
-    description text NOT NULL
+    description text NOT NULL,
+    FOREIGN KEY (created_by_user) REFERENCES USER (user_id)
+);
+
+CREATE TABLE room_history (
+    chat_room_id integer NOT NULL,
+    user_id integer NOT NULL,
+    date_joined text NOT NULL,
+    PRIMARY KEY (chat_room_id, user_id)
 );
 
