@@ -36,6 +36,8 @@ def create_app(test_config=None):
     # A route to test Flask connection
     @app.route('/test')
     def test():
+        from . import db
+        db = db.get_db()
         return "Server is working.", 200
 
     return app
