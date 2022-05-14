@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS USER;
 
 DROP TABLE IF EXISTS chat_room;
 
+DROP TABLE IF EXISTS room_history;
+
 -- configure sqlite
 PRAGMA foreign_keys = ON;
 
