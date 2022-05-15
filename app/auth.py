@@ -2,7 +2,7 @@ import functools
 import logging
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, Markup
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -10,8 +10,19 @@ from app.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+# Uncomment following line to print DEBUG logs
+#  logging.basicConfig(encoding='utf-8', level=logging.DEBUG)
 
-logging.basicConfig(encoding='utf-8', level=logging.DEBUG)
+
+def login_required(view):
+    """Decorator to redirect unauthenticated users back to login page."""
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if "user_id" not in session:
+            return redirect(url_for('auth.login'))
+        return view(**kwargs)
+
+    return wrapped_view
 
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -37,10 +48,12 @@ def register():
             try:
                 db.execute("""INSERT INTO USER (password, email_address, full_name, short_name)
                     VALUES (?, ?, ?, ?)""",
-                           (generate_password_hash(f["password"]), f["email"], f["full_name"], f["short_name"]))
+                           (generate_password_hash(f["password"]), f["email"].strip().lower(),
+                               f["full_name"].strip(), f["short_name"].strip()))
                 db.commit()
             except db.IntegrityError:
-                flash(f"User with the email address \"{f['email']}\" is already registered.")
+                message = Markup(f"User with the email address <b>{f['email']}</b> is already registered.")
+                flash(message, "warning")
             else:
                 return redirect(url_for("auth.login"))
 
@@ -50,6 +63,10 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     """Log in user by adding to session."""
+    # Redirect to index page if user is already logged in
+    if "user_id" in session:
+        return redirect(url_for("chat.index"))
+
     errors = {}
     if request.method == 'POST':
         f = request.form
@@ -65,7 +82,7 @@ def login():
 
         if not errors:
             user = db.execute("""SELECT user_id, email_address, password FROM user 
-                    WHERE email_address = ?""", (f["email"],)).fetchone()
+                    WHERE email_address = ?""", (f["email"].strip().lower(),)).fetchone()
 
             if user is None:
                 is_bad_login = True
@@ -75,7 +92,7 @@ def login():
                 logging.debug("Password is incorrect")
 
             if is_bad_login:
-                flash("Email address or password is incorrect.")
+                flash("Email address or password is incorrect.", "warning")
             elif not errors:
                 # Add the user info to session
                 # User stays logged in this way
@@ -85,7 +102,8 @@ def login():
     return render_template('auth/login.html', errors=errors)
 
 
-@bp.route('/logout', methods=('GET', 'POST'))
+@bp.route('/logout')
 def logout():
     """Log out user by removing info from session."""
-    return "Logout page."
+    session.clear()
+    return redirect(url_for("chat.index"))

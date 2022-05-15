@@ -13,42 +13,53 @@
 
   <link href="{{url_for("static", filename="favicon.ico")}}" rel="icon">
   <link href="{{url_for("static", filename="styles.css")}}" rel="stylesheet">
-  <link href="{{url_for("static", filename="fonts/fontawesome.css")}}" rel="stylesheet">
+  <link href="{{url_for("static", filename="fontawesome/css/all.css")}}" rel="stylesheet">
 
   <title>Chatbox: {% block title %}{% endblock %}</title>
 </head>
 
 <body>
 
-  <nav class="bg-light border navbar navbar-expand-md navbar-light">
-    <div class="container-fluid">
-      <a class="navbar-brand text-primary" href="{{ url_for("chat.index") }}">
-        <i class="fa-solid fa-comments"></i>
-        Chatbox</a>
-      <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
-        data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar">
-        {% if session["user_id"] %}
-        <ul class="navbar-nav me-auto mt-2">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for("chat.create_room") }}">Create Room</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for("chat.join_room") }}">Join Room</a></li>
-        </ul>
-        <ul class="navbar-nav ms-auto mt-2">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for("auth.logout") }}">Log Out</a></li>
-        </ul>
-        {% else %}
-        <ul class="navbar-nav ms-auto mt-2">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for("auth.register") }}">Register</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for("auth.login") }}">Log In</a></li>
-        </ul>
-        {% endif %}
+  <header>
+    <nav class="bg-light border navbar navbar-expand-md navbar-light">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="{{ url_for("chat.index") }}">
+          <i class="fa-solid fa-comments"></i>
+          Chatbox</a>
+        <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+          data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar">
+          {% if session["user_id"] %}
+          <ul class="navbar-nav me-auto mt-2">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for("chat.create_room") }}">Create Room</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for("chat.join_room") }}">Join Room</a></li>
+          </ul>
+          <ul class="navbar-nav ms-auto mt-2">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for("auth.logout") }}">Log Out</a></li>
+          </ul>
+          {% else %}
+          <ul class="navbar-nav ms-auto mt-2">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for("auth.register") }}">Register</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for("auth.login") }}">Log In</a></li>
+          </ul>
+          {% endif %}
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
-  <main class="container-fluid py-5 text-center">
+  {% with messages = get_flashed_messages(category_filter=["info"]) %}
+  {% if messages %}
+
+  <div class="alert alert-primary mb-0 text-center" role="alert">
+    {{ get_flashed_messages() | join(" ") }}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  <main class="container-fluid py-5">
     {% block main %}{% endblock %}
   </main>
 
@@ -56,7 +67,7 @@
     Copyright &copy; 2022
   </footer>
 
-  {% with messages = get_flashed_messages() %}
+  {% with messages = get_flashed_messages(category_filter=["warning"]) %}
   {% if messages %}
   <div id="errorToast" class="toast position-absolute start-50 top-50 translate-middle" role="alert"
     aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
