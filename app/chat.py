@@ -55,8 +55,22 @@ def create_room():
 @bp.route('/join-room', methods=('GET', 'POST'))
 @login_required
 def join_room():
+    """Join a chat room."""
+    if request.method == "POST":
+        db = get_db()
+        has_error = False
+        f = request.form
 
-    return "Join room page."
+        if not f["room_name"]:
+            flash("Room name is required", "warning")
+            has_error = True
+
+        room_name = f["room_name"].strip().lower()
+
+        if not has_error:
+            pass
+
+    return render_template("chat/join_room.html")
 
 
 @bp.route('/live-chat', methods=('GET', 'POST'))
