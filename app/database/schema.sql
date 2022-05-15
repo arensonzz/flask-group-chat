@@ -20,7 +20,7 @@ CREATE TABLE USER (
 CREATE TABLE chat_room (
     chat_room_id integer NOT NULL PRIMARY KEY,
     created_by_user integer NOT NULL,
-    name text NOT NULL UNIQUE,
+    name text NOT NULL UNIQUE, -- room name is case insensitive
     password text NOT NULL,
     description text NOT NULL,
     FOREIGN KEY (created_by_user) REFERENCES USER (user_id)

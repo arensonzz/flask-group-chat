@@ -108,11 +108,14 @@ nav .navbar-brand {
 }
 
 /* layout.html */
-.flashes {
-}
 
 /* auth/register.html */
 .form-container {
   text-align: left;
   max-width: 400px;
+}
+
+/* chat/create_room.html */
+.create-room-container {
+  max-width: 800px;
 }

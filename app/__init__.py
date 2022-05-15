@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, redirect, url_for
 
 
 def create_app(test_config=None):
@@ -32,10 +32,13 @@ def create_app(test_config=None):
     from . import (auth, chat)
     app.register_blueprint(auth.bp)
     app.register_blueprint(chat.bp)
+    # Make chat index the root
+    app.add_url_rule('/', endpoint='chat.index')
 
     # A route to test Flask connection
     @app.route('/test')
     def test():
+        """Test Flask connection."""
         from . import db
         db = db.get_db()
         return "Server is working.", 200
