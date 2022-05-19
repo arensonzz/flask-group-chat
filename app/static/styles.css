@@ -119,3 +119,13 @@ nav .navbar-brand {
 .create-room-container {
   max-width: 800px;
 }
+
+/* chat/live_chat.html */
+.message-container {
+  height: min(500px);
+}
+
+.message-info,
+.message-text {
+  font-size: 0.9rem;
+}

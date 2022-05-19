@@ -25,6 +25,19 @@ def login_required(view):
     return wrapped_view
 
 
+def load_logged_in_user():
+    """Return dict of logged in user's informations."""
+    user_id = session["user_id"]
+    user = None
+
+    if user_id is not None:
+        user = get_db().execute("SELECT * FROM user WHERE user_id = ?",
+                                (user_id,)).fetchone()
+
+    return user
+
+
+# ROUTES
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     """Register user to database."""

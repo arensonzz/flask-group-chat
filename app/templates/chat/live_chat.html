@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Live chat
+{% endblock %}
+
+{% block main %}
+
+<div class="container  create-room-container mx-auto p-1">
+  <h1 class="h5 bg-secondary text-light p-2 mb-0">{{ room["name"] }}</h1>
+  <div class="message-container container-fluid mb-2 py-2 overflow-auto border border-1 border-secondary"
+    id="messageContainer">
+    <!-- <div class="row gap-1 mb-2">
+      <div class="message-info col-2 ms-2 align-self-start bg-secondary text-white rounded-2">Name</div>
+      <div class="message-text col me-2 border border-1 rounded-2"></div>
+    </div> -->
+
+  </div>
+
+  <form id="form">
+    <input autocomplete="off" class="form-control" type="text" id="input" placeholder="Write a message...">
+  </form>
+  <button class="btn btn-primary flex-grow-1 mt-2" id="leaveButton">Leave</button>
+</div>
+
+{% endblock %}

@@ -1,5 +1,9 @@
 import os
 from flask import Flask, redirect, url_for
+from flask_socketio import SocketIO
+
+# Create SocketIO instance
+socketio = SocketIO(logger=True)
 
 
 def create_app(test_config=None):
@@ -28,12 +32,17 @@ def create_app(test_config=None):
     from . import db
     db.init_app(app)
 
+    # Initialize SocketIO
+    socketio.init_app(app)
+
     # Register blueprints
     from . import (auth, chat)
     app.register_blueprint(auth.bp)
     app.register_blueprint(chat.bp)
     # Make chat index the root
     app.add_url_rule('/', endpoint='chat.index')
+
+    #
 
     # A route to test Flask connection
     @app.route('/test')
