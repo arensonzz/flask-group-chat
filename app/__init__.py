@@ -46,8 +46,6 @@ def create_app(test_config=None):
     # Make chat index the root
     app.add_url_rule('/', endpoint='chat.index')
 
-    #
-
     # A route to test Flask connection
     @app.route('/test')
     def test():

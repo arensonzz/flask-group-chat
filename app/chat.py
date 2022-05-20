@@ -10,7 +10,7 @@ from flask_socketio import emit, leave_room, join_room as flask_join_room
 from . import socketio
 
 # Uncomment following line to print DEBUG logs
-logging.basicConfig(encoding='utf-8', level=logging.DEBUG)
+#  logging.basicConfig(encoding='utf-8', level=logging.DEBUG)
 
 # Chat is the root blueprint, no url_prefix specified
 bp = Blueprint('chat', __name__)
@@ -18,15 +18,6 @@ bp = Blueprint('chat', __name__)
 
 # ROUTES
 @bp.route('/', methods=('GET', 'POST'))
-@login_required
-def index():
-    """Display previously entered rooms. Display rooms created by logged in user."""
-
-    # TODO
-    # For now redirects to create_room page
-    return redirect(url_for("chat.create_room"))
-
-
 @bp.route('/create-room', methods=('GET', 'POST'))
 @login_required
 def create_room():

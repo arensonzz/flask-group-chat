@@ -130,7 +130,8 @@ nav .navbar-brand {
   font-size: 0.9rem;
 }
 
-/* dialog arow for messages */
+/* dialog arow for messages
+   Inspired from: https://codepen.io/ompmega/pen/qByYQ d */
 .dialog-box {
   position: relative;
 }

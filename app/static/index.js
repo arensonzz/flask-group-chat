@@ -13,6 +13,12 @@ socket.on("connect", () => {
   console.log("SocketIO: Connected to server");
 });
 
+function appendMessage(msgHtml) {
+  messageContainer.insertAdjacentHTML("beforeend", msgHtml);
+  // Scroll message container to bottom when new message arrives
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
 // Add the status message to DOM
 socket.on("status", (data) => {
   let newItem = `
@@ -20,7 +26,7 @@ socket.on("status", (data) => {
       <div class="message-text col me-2 text-muted">${data.msg}</div>
     </div>
   `;
-  messageContainer.insertAdjacentHTML("beforeend", newItem);
+  appendMessage(newItem);
 });
 
 // Add the chat message to DOM
@@ -41,7 +47,7 @@ socket.on("message", (data) => {
       </div>
     </div>
   `;
-  messageContainer.insertAdjacentHTML("beforeend", newItem);
+  appendMessage(newItem);
 });
 
 // Send message with enter (hidden submit button)

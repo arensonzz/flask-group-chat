@@ -40,7 +40,7 @@
 
             <li class="nav-item"><a class="nav-link" href="{{ url_for("chat.create_room") }}">Create Room</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for("chat.join_room") }}">Join Room</a></li>
-            {% if session["room_id"] and  %}
+            {% if session["room_id"] and  request.url_rule.endpoint != 'chat.live_chat' %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for("chat.live_chat") }}">Go back to last room</a>
             </li>
             {% endif %}
