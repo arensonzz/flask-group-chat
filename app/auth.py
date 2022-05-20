@@ -57,6 +57,9 @@ def register():
         if not f["short_name"]:
             errors["short_name"] = "Short name is required for profile"
 
+        if len(f["short_name"]) > 20:
+            errors["short_name"] = "Short name length cannot exceed 20 characters"
+
         if not errors:
             try:
                 db.execute("""INSERT INTO USER (password, email_address, full_name, short_name)

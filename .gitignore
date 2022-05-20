@@ -2,3 +2,4 @@ __pycache__/
 .python-version
 node_modules/
 instance/
+flask_session/

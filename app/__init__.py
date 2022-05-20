@@ -1,5 +1,6 @@
 import os
 from flask import Flask, redirect, url_for
+from flask_session import Session
 from flask_socketio import SocketIO
 
 # Create SocketIO instance
@@ -13,6 +14,7 @@ def create_app(test_config=None):
     # Set config values
     app.config.from_mapping(
         DATABASE=os.path.join(app.instance_path, 'flask_group_chat.sqlite'),
+        SESSION_TYPE='filesystem',
     )
 
     if test_config is None:
@@ -27,6 +29,8 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+    # Initialize session
+    Session(app)
 
     # Initialize app with database commands
     from . import db

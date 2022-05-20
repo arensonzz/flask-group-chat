@@ -6,21 +6,23 @@ Live chat
 
 {% block main %}
 
-<div class="container  create-room-container mx-auto p-1">
-  <h1 class="h5 bg-secondary text-light p-2 mb-0">{{ room["name"] }}</h1>
+<div class="container create-room-container mx-auto p-1">
+  <div class="d-flex">
+    <h1 class="h5 bg-secondary text-light p-2 mb-0 flex-grow-1">{{ room["name"] }}</h1>
+    <button class="btn btn-sm btn-outline-secondary" id="leaveButton">Leave</button>
+  </div>
   <div class="message-container container-fluid mb-2 py-2 overflow-auto border border-1 border-secondary"
     id="messageContainer">
-    <!-- <div class="row gap-1 mb-2">
-      <div class="message-info col-2 ms-2 align-self-start bg-secondary text-white rounded-2">Name</div>
-      <div class="message-text col me-2 border border-1 rounded-2"></div>
-    </div> -->
-
   </div>
 
   <form id="form">
-    <input autocomplete="off" class="form-control" type="text" id="input" placeholder="Write a message...">
+    <div class="d-flex flex-nowrap">
+      <input autocomplete="off" class="form-control flex-grow-1 me-1" type="text" id="input"
+        placeholder="Write a message...">
+      <button class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
   </form>
-  <button class="btn btn-primary flex-grow-1 mt-2" id="leaveButton">Leave</button>
 </div>
 
+<script src="{{ url_for("static", filename="index.js") }}" charset="utf-8"></script>
 {% endblock %}

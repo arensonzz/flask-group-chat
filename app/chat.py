@@ -84,18 +84,20 @@ def join_room():
             else:
                 room_id = room["chat_room_id"]
                 session["room_id"] = room_id
-                return redirect(url_for("chat.live_chat", chat_room_id=room_id))
+                return redirect(url_for("chat.live_chat"))
 
     return render_template("chat/join_room.html")
 
 
-@bp.route('/live-chat/<int:chat_room_id>', methods=('GET', 'POST'))
+@bp.route('/live-chat', methods=('GET', 'POST'))
 @login_required
-def live_chat(chat_room_id):
-    if "room_id" not in session or session["room_id"] != chat_room_id:
+def live_chat():
+    """A page to send and receive messages via chat room."""
+    if "room_id" not in session:
         flash("Unauthorized access to the room. Please enter the password.", "warning")
         return redirect(url_for("chat.join_room"))
     db = get_db()
+    chat_room_id = session["room_id"]
     room = db.execute("""SELECT * FROM chat_room
             WHERE chat_room_id = ?""", (chat_room_id,)).fetchone()
 
@@ -110,8 +112,19 @@ def live_chat(chat_room_id):
     return render_template("chat/live_chat.html", room=room)
 
 
-# SocketIO Events
+@bp.route('/leave-chat')
+@login_required
+def leave_chat():
+    if "room_id" in session:
+        session.pop("room_id")
+    return redirect(url_for("chat.index"))
 
+
+# SocketIO Events
+# Note: namespace is not the same as route. Socket.io namespaces
+# just allow you to split logic of application over single shared connection.
+# Note: You cannot modify session inside socket.io events. Instead
+# create a route and redirect to that route.
 @socketio.on('connect', namespace="/live-chat")
 def test_connect():
     """Test SocketIO connection by passing message between server and client."""
@@ -122,14 +135,10 @@ def test_connect():
 def joined(message):
     """Sent by clients when they enter a room.
     A status message is broadcast to all people in the room."""
-    if "room_id" not in session:
-        return
-
     room = session["room_id"]
     user = load_logged_in_user()
     flask_join_room(room)
 
-    logging.debug("### on joined")
     emit('status', {'msg': user["short_name"] + ' has entered the room.'}, room=room)
 
 
@@ -137,13 +146,9 @@ def joined(message):
 def chat_message(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
-    if "room_id" not in session:
-        return
-
     room = session["room_id"]
     user = load_logged_in_user()
 
-    logging.debug("### on message")
     emit('message', {'user': user["short_name"], 'msg': message['msg']}, room=room)
 
 
@@ -152,10 +157,7 @@ def left(message):
     """Sent by clients when they leave a room.
     A status message is broadcast to all people in the room."""
     room = session['room_id']
-    # Revoke access rights to room
-    session.pop("room_id")
     user = load_logged_in_user()
 
     leave_room(room)
-    logging.debug("### on left")
-    emit('status', {'user': user["short_name"], 'msg': ' has left the room.'}, room=room)
+    emit('status', {'msg': user["short_name"] + ' has left the room.'}, room=room)
