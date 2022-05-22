@@ -13,26 +13,26 @@ User accounts and chat rooms are protected by passwords. These passwords are has
 
 ## Running Server Locally
 
-* Install Python dependencies
-```sh
-pip3 install -r requirements.txt
-```
-* Initiate the Sqlite3 database with flask CLI command
-```sh
-flask init-db
-```
-* [OPTIONAL] Insert mock data to database for test purposes. All mock passwords are `1234`.
-```sh
-flask import-mock-data
-```
-* Start the Flask server
-```sh
-python app.py
-```
-* Access the application from browser
-```sh
-http://localhost:5000
-```
+1. Install Python dependencies
+    ```sh
+    pip3 install -r requirements.txt
+    ```
+1. Initiate the Sqlite3 database with flask CLI command
+    ```sh
+    flask init-db
+    ```
+1. [OPTIONAL] Insert mock data to database for test purposes. All mock passwords are `1234`.
+    ```sh
+    flask import-mock-data
+    ```
+1. Start the Flask server
+    ```sh
+    python app.py
+    ```
+1. Access the application from browser
+    ```sh
+    http://localhost:5000
+    ```
 
 ## Routes
 
@@ -50,33 +50,33 @@ http://localhost:5000
 
 * Create account
 
-<img src="images/register.png"
-         alt="An interface to register to the website."
-         style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
+    <img src="images/register.png"
+             alt="An interface to register to the website."
+             style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
 
 * Login
 
-<img src="images/login.png"
-     alt="An interface to login with registered account."
-     style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
+    <img src="images/login.png"
+         alt="An interface to login with registered account."
+         style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
 
 * Create chat room
 
-<img src="images/create_room.png"
-     alt="An interface to create unique chat room."
-     style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
+    <img src="images/create_room.png"
+         alt="An interface to create unique chat room."
+         style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
 
 * Join chat room
 
-<img src="images/join_room.png"
-     alt="An interface to join previously created rooms."
-     style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
+    <img src="images/join_room.png"
+         alt="An interface to join previously created rooms."
+         style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
 
 * Live chat page
 
-<img src="images/live_chat.png"
-     alt="An interface to message with others in the room."
-     style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
+    <img src="images/live_chat.png"
+         alt="An interface to message with others in the room."
+         style="margin: 10px 30px; max-width: 600px; border: 1px solid grey;" />
 
 ## Technologies
 
