@@ -13,8 +13,10 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     # Set config values
     app.config.from_mapping(
+        SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flask_group_chat.sqlite'),
         SESSION_TYPE='filesystem',
+        SESSION_PERMANENENT=False,
     )
 
     if test_config is None:
