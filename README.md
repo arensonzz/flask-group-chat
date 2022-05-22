@@ -34,6 +34,18 @@ python app.py
 http://localhost:5000
 ```
 
+## Routes
+
+| Route | Description | Methods |
+|:---:|---|:---:|
+| /auth/register | Interface where user creates an account. | GET, POST |
+| /auth/login | Interface where user enters the application with his account. | GET, POST |
+| /auth/logout | Logouts from the user's account and clears the session. | GET |
+| /create-room | Interface where user creates unique chat rooms. | GET, POST |
+| /join-room | Interface where user joins previously created chat rooms. | GET, POST |
+| /live-chat | Interface of a chat room. People send messages to other people in the room. | GET, POST |
+| /leave-chat | User leaves the chat room. User is redirected to index page. | GET |
+
 ## Application Interface
 
 * Create account
